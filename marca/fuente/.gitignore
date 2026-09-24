@@ -1,7 +1,8 @@
 node_modules/
 fonts/
-out6/
+out7/
 board/
 _tmp_render.html
 _c.png
 __pycache__/
+dimg/

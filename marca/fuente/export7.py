@@ -1,8 +1,9 @@
 import os, shutil, logo_kit as lk
-from final import *
-OUT = "out6/marca"
-shutil.rmtree("out6", ignore_errors=True)
+from identidad import *
+OUT = "out7/marca"
+shutil.rmtree("out7", ignore_errors=True)
 for sub in ("svg", "png", "iconos"): os.makedirs(f"{OUT}/{sub}", exist_ok=True)
+X = (OB[2] - OB[0]) / 6
 PAD = 2 * X
 LOCKS = {"vertical": WV, "horizontal": WH, "simbolo": None}
 for name, word in LOCKS.items():
@@ -12,18 +13,17 @@ for name, word in LOCKS.items():
         if sc in ("color", "negativo", "tinta", "hueso"):
             for w in (1024, 2048):
                 lk.export_png(s, f"{OUT}/png/gc_{name}_{sc}_{w}.png", w if name != "simbolo" else w // 2)
-for sc, ink in (("petroleo", PET), ("oro", ORO), ("tinta", TIN), ("hueso", HUE)):
+for sc, ink in (("petroleo", PET), ("oro", ORO), ("tinta", TIN), ("hueso", HUE)):  # reducido, una tinta
     open(f"{OUT}/svg/gc_simbolo-reducido_{sc}.svg", "w").write(lk.svg([(SMALL, ink)], pad=X, title="Gabinete Contable · símbolo reducido"))
-def tile(sym, size, pad_ratio, radius, fn_svg=None, fn_png=None, px=512, bg=PET, fg=ORO):
-    b = lk.bounds(sym); sw, sh = b[2] - b[0], b[3] - b[1]
+def tile(layers_, size, pad_ratio, radius, fn_svg=None, fn_png=None, px=512):
+    allb = lk.bounds(lk.union(*[p for p, _ in layers_])); sw, sh = allb[2] - allb[0], allb[3] - allb[1]
     s = size * (1 - 2 * pad_ratio) / max(sw, sh)
-    t = lk.scale(lk.move(sym, -b[0], -b[1]), s)
-    t = lk.move(t, (size - sw * s) / 2, (size - sh * s) / 2)
-    svg = lk.svg([(lk.rect(0, 0, size, size, size * radius), bg), (t, fg)], box=(0, 0, size, size), title="Gabinete Contable")
+    L = [(lk.move(lk.scale(lk.move(p, -allb[0], -allb[1]), s), (size - sw * s) / 2, (size - sh * s) / 2), c) for p, c in layers_]
+    svg = lk.svg([(lk.rect(0, 0, size, size, size * radius), PET)] + L, box=(0, 0, size, size), title="Gabinete Contable")
     if fn_svg: open(fn_svg, "w").write(svg)
     if fn_png: lk.export_png(svg, fn_png, px)
-tile(SMALL, 32, 0.08, 0.18, f"{OUT}/iconos/favicon.svg")
+tile([(SMALL, HUE)], 32, 0.08, 0.18, f"{OUT}/iconos/favicon.svg")
 for px in (32, 180, 512):
-    tile(SMALL if px <= 32 else SYM, 512, 0.08 if px <= 32 else 0.16, 0, fn_png=f"{OUT}/iconos/gc_icono_{px}.png", px=px)
-tile(SYM, 1080, 0.2, 0, f"{OUT}/iconos/gc_avatar.svg", f"{OUT}/iconos/gc_avatar_1080.png", 1080)
+    tile([(SMALL, HUE)] if px <= 32 else layers(None, "negativo"), 512, 0.08 if px <= 32 else 0.14, 0, fn_png=f"{OUT}/iconos/gc_icono_{px}.png", px=px)
+tile(layers(None, "negativo"), 1080, 0.2, 0, f"{OUT}/iconos/gc_avatar.svg", f"{OUT}/iconos/gc_avatar_1080.png", 1080)
 print(len(os.listdir(f"{OUT}/svg")), len(os.listdir(f"{OUT}/png")), sorted(os.listdir(f"{OUT}/iconos")))
