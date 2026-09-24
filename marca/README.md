@@ -2,34 +2,32 @@
 
 ## La idea
 
-La mirada del búho. Del búho queda solo lo esencial: los ojos, la mirada
-atenta de quien revisa cada cifra. Cada ojo tiene un aro grueso, tres anillos
-finos equidistantes (como el grabado de los billetes y títulos de valor) y una
-pupila con brillo. Dos ojos, dos columnas: Debe y Haber.
-
-El nombre va en Bodoni Moda: el aro grueso y los anillos finos repiten el
-contraste de trazo grueso y fino de la letra.
+El nombre primero. La marca es Gabinete Contable en Bodoni Moda, en mayúsculas
+espaciadas: GABINETE y CONTABLE, dos líneas del mismo ancho. El búho acompaña:
+sus ojos, en calma (aro fino y pupila), están entre las dos palabras, sobre la
+raya que en el libro contable separa y cierra las cuentas. La raya y los ojos
+son el único acento; en negativo van en oro.
 
 ## Archivos
 
 | Carpeta | Contenido |
 |---|---|
-| `svg/` | Maestros en curvas: `vertical` (principal), `horizontal` y `simbolo` (los ojos), en `color`, `negativo`, `oro`, `tinta`, `hueso` y `blanco`; `simbolo-reducido` (aro y pupila, sin anillos) para 16–24 px. |
+| `svg/` | Maestros en curvas: `vertical` (principal: dos líneas con filete y ojos), `horizontal` (una línea: GABINETE ◦◦ CONTABLE) y `simbolo` (los ojos), en `color`, `negativo`, `oro`, `tinta`, `hueso` y `blanco`; `simbolo-reducido` (aro más grueso) para 16–32 px. |
 | `png/` | Los mismos, transparentes, a 1024 y 2048 px. |
 | `iconos/` | `favicon.svg`, avatar de 1080 px e íconos de 32, 180 y 512 px (ojos en oro sobre petróleo). |
 | `presentacion/` | Láminas de presentación del logo. |
-| `fuente/` | Scripts que generan todo lo anterior (`marca.py` dibuja los ojos y arma los logotipos). |
+| `fuente/` | Scripts que generan todo lo anterior (`sereno.py` dibuja los ojos y arma los logotipos). |
 
-- `color`: ojos y nombre en petróleo, sobre hueso o blanco.
-- `negativo`: ojos en oro y nombre en hueso, solo sobre petróleo.
-- La versión horizontal usa el corte de texto de Bodoni (opsz 11, 600) para
-  aguantar tamaños pequeños; la vertical usa el corte display (opsz 18, 500).
+- `color`: todo en petróleo, sobre hueso o blanco.
+- `negativo`: nombre en hueso, filete y ojos en oro, solo sobre petróleo.
+- La versión de una línea usa el corte de texto de Bodoni (opsz 11, 600) para
+  aguantar tamaños pequeños; la principal usa el corte display (opsz 18, 500).
 
 ## Color
 
 | Nombre | HEX | Uso |
 |---|---|---|
-| Petróleo | `#134150` | Ojos, nombre y fondos de autoridad. 9,7:1 con hueso. |
+| Petróleo | `#134150` | Nombre, filete, ojos y fondos de autoridad. 9,7:1 con hueso. |
 | Oro viejo | `#C2A36B` | Un solo toque por pieza. 4,6:1 sobre petróleo. Nunca texto sobre fondos claros. |
 | Hueso | `#F4F0E8` | Papel y fondo base. |
 | Tinta | `#14252B` | Texto. 14:1 sobre hueso. |
@@ -42,11 +40,11 @@ contraste de trazo grueso y fino de la letra.
 
 ## Uso
 
-- Zona de protección: el radio de un ojo por lado.
-- Mínimos: vertical 120 px de ancho (30 mm), horizontal 150 px (38 mm), símbolo 32 px de ancho (10 mm).
-  De 16 a 32 px, el símbolo reducido.
+- Zona de protección: dos diámetros de ojo por lado.
+- Mínimos: principal 160 px de ancho (40 mm), una línea 150 px (38 mm).
+  Los ojos solos, desde 32 px; de 16 a 32 px, el reducido.
 - No deformar, recolorear, agregar sombras o degradados, reescribir el nombre
-  con otra fuente, mover el brillo de las pupilas ni poner el oro sobre fondos claros.
+  con otra fuente, sacar los ojos del filete ni poner el oro sobre fondos claros.
 
 ## Regenerar
 
@@ -54,6 +52,6 @@ contraste de trazo grueso y fino de la letra.
 cd marca/fuente
 pip install fonttools uharfbuzz skia-pathops brotli playwright numpy scipy pillow
 npm install
-python3 export4.py   # maestros e íconos en out4/marca
-python3 boards3.py   # láminas en board/
+python3 export5.py   # maestros e íconos en out5/marca
+python3 boards4.py   # láminas en board/
 ```

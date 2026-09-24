@@ -1,7 +1,7 @@
 import os, shutil, logo_kit as lk
-from marca import *
-OUT = "out4/marca"
-shutil.rmtree("out4", ignore_errors=True)
+from sereno import *
+OUT = "out5/marca"
+shutil.rmtree("out5", ignore_errors=True)
 for sub in ("svg", "png", "iconos"): os.makedirs(f"{OUT}/{sub}", exist_ok=True)
 PAD = 2 * X
 LOCKS = {"vertical": WV, "horizontal": WH, "simbolo": None}
@@ -22,8 +22,8 @@ def tile(sym, size, pad_ratio, radius, fn_svg=None, fn_png=None, px=512, bg=PET,
     svg = lk.svg([(lk.rect(0, 0, size, size, size * radius), bg), (t, fg)], box=(0, 0, size, size), title="Gabinete Contable")
     if fn_svg: open(fn_svg, "w").write(svg)
     if fn_png: lk.export_png(svg, fn_png, px)
-tile(SMALL, 32, 0.08, 0.18, f"{OUT}/iconos/favicon.svg")
+tile(SMALL, 32, 0.1, 0.18, f"{OUT}/iconos/favicon.svg")
 for px in (32, 180, 512):
-    tile(SMALL if px <= 32 else SYM, 512, 0.08 if px <= 32 else 0.18, 0, fn_png=f"{OUT}/iconos/gc_icono_{px}.png", px=px)
-tile(SYM, 1080, 0.2, 0, f"{OUT}/iconos/gc_avatar.svg", f"{OUT}/iconos/gc_avatar_1080.png", 1080)
+    tile(SMALL if px <= 32 else SYM, 512, 0.1 if px <= 32 else 0.26, 0, fn_png=f"{OUT}/iconos/gc_icono_{px}.png", px=px)
+tile(SYM, 1080, 0.3, 0, f"{OUT}/iconos/gc_avatar.svg", f"{OUT}/iconos/gc_avatar_1080.png", 1080)
 print(len(os.listdir(f"{OUT}/svg")), len(os.listdir(f"{OUT}/png")), sorted(os.listdir(f"{OUT}/iconos")))

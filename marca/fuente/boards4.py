@@ -1,7 +1,7 @@
 import sys, logo_kit as lk
-from marca import *
+from sereno import *
 from shot import shot, HERE
-M = f"file://{HERE}/out4/marca"
+M = f"file://{HERE}/out5/marca"
 Wb, Hb = 1600, 900
 def inl(L, h=None, w=None):
     s = lk.svg(L); a = (f'height="{h}" ' if h else "") + (f'width="{w}" ' if w else "")
@@ -15,46 +15,45 @@ only = set(sys.argv[1:]); want = lambda k: not only or k in only
 
 # 1 · logo
 if want("logo"):
-    b = f'''<div class=b style="background:{HUE};display:flex;align-items:center;justify-content:center">{inl(layers(WV,"color"), h=560)}
+    b = f'''<div class=b style="background:{HUE};display:flex;align-items:center;justify-content:center">{inl(layers(WV,"color"), w=860)}
     {tag("Gabinete Contable · Identidad")}{tag("01", x=1510)}</div>'''
     shot(page(b), "board/01_logo.png", Wb, Hb)
 
 # 2 · idea
 if want("idea"):
-    s = 3.2; ox, oy = 150, 320
-    sym = inl(layers(None, "color"), w=SW * s)
-    L = lambda x1, y1, x2, y2=None: f'<div style="position:absolute;left:{min(x1,x2)}px;top:{y1}px;width:{abs(x2-x1)}px;height:1px;background:{NIE}"></div>'
-    V = lambda x, y1, y2: f'<div style="position:absolute;left:{x}px;top:{min(y1,y2)}px;width:1px;height:{abs(y2-y1)}px;background:{NIE}"></div>'
-    dot = lambda x, y: f'<div style="position:absolute;left:{x-4}px;top:{y-4}px;width:8px;height:8px;border-radius:4px;background:{TIN}"></div>'
-    lab = lambda x, y, t, w=300, a="left": f'<div class=lab style="position:absolute;left:{x}px;top:{y}px;width:{w}px;text-align:{a};color:{TIN}">{t}</div>'
-    c1x, c2x, cy = ox + CX1 * s, ox + CX2 * s, oy + R * s
-    top, bot = oy - 70, oy + 2 * R * s + 70
-    ann = (dot(c1x, cy - (R - 2) * s) + V(c1x, cy - (R - 2) * s, top) + lab(c1x - 150, top - 26, "Aro · el borde del ojo", 300, "center")
-           + dot(c2x + PUP * 0.36 * s, cy - PUP * 0.36 * s) + V(c2x + PUP * 0.36 * s, cy - PUP * 0.36 * s, top) + lab(c2x + PUP * 0.36 * s - 150, top - 26, "Brillo · la mirada atenta", 300, "center")
-           + dot(c1x - 22 * s, cy) + V(c1x - 22 * s, cy, bot) + lab(max(40, c1x - 22 * s - 150), bot + 12, "Anillos · grabado de billete", 300, "center" if c1x - 22 * s - 150 >= 40 else "left")
-           + dot(c2x, cy + 20 * s) + V(c2x, cy + 20 * s, bot) + lab(c2x - 150, bot + 12, "Dos ojos · Debe y Haber", 300, "center"))
-    txt = f'''<div style="position:absolute;left:760px;top:250px;width:760px;display:flex;flex-direction:column;gap:26px">
-      <div class=serif style="font-size:56px;font-weight:500;line-height:1.08;color:{PET}">La mirada del búho.</div>
-      <div style="font-size:21px;line-height:1.55">Del búho queda lo esencial: los ojos. La mirada tranquila y atenta de quien revisa cada cifra de su empresa.</div>
-      <div style="font-size:21px;line-height:1.55">Los anillos finos vienen del grabado de los billetes y los títulos de valor, la línea que da confianza al dinero. El aro grueso y los anillos finos repiten el contraste de la letra Bodoni: símbolo y nombre hablan el mismo idioma.</div>
+    logo = inl(layers(WV, "color"), w=540)
+    L = lambda x1, y, x2: f'<div style="position:absolute;left:{min(x1,x2)}px;top:{y}px;width:{abs(x2-x1)}px;height:1px;background:{NIE}"></div>'
+    lab = lambda x, y, t: f'<div class=lab style="position:absolute;left:{x}px;top:{y-8}px;width:280px;color:{TIN}">{t}</div>'
+    ox, oy = 90, 330
+    # posiciones reales del logo a escala
+    b = lk.bounds(lk.union(V_TEXT, V_ACC)); sc = 540 / (b[2] - b[0])
+    yl = lambda v: oy + (v - b[1]) * sc
+    eb = lk.bounds(V_ACC)
+    ann = (L(ox + 550, yl((eb[1] + eb[3]) / 2), ox + 590) + lab(ox + 602, yl((eb[1] + eb[3]) / 2), "Filete y ojos · el acento")
+           + L(ox + 550, yl(lk.bounds(V_TEXT)[1] + 35), ox + 590) + lab(ox + 602, yl(lk.bounds(V_TEXT)[1] + 35), "El nombre · manda")
+           + L(ox + 550, yl(lk.bounds(V_TEXT)[3] - 35), ox + 590) + lab(ox + 602, yl(lk.bounds(V_TEXT)[3] - 35), "Bodoni · sobriedad"))
+    txt = f'''<div style="position:absolute;left:1030px;top:290px;width:490px;display:flex;flex-direction:column;gap:24px">
+      <div class=serif style="font-size:50px;font-weight:500;line-height:1.08;color:{PET}">El nombre primero.</div>
+      <div style="font-size:20px;line-height:1.55">La marca es el nombre: Gabinete Contable en Bodoni, en mayúsculas espaciadas. Sobrio y con autoridad, sin adornos que distraigan.</div>
+      <div style="font-size:20px;line-height:1.55">El búho acompaña. Sus ojos, en calma, están entre las dos palabras, sobre la raya que en el libro contable separa y cierra las cuentas. Está presente sin pedir atención.</div>
       <div style="width:80px;height:2px;background:{ORO}"></div>
-      <div style="font-size:17px;line-height:1.5;color:{NIE}">Dos ojos, dos columnas: Debe y Haber, que se miran de igual a igual. El brillo en la pupila dice que alguien está atento.</div></div>'''
-    b = f'<div class=b style="background:{HUE}"><div style="position:absolute;left:{ox}px;top:{oy}px">{sym}</div>{ann}{txt}{tag("La idea")}{tag("02", x=1510)}</div>'
-    shot(page(b), "board/02_idea.png", Wb, Hb)
+      <div style="font-size:16px;line-height:1.5;color:{NIE}">La raya y los ojos son el único acento de la marca. En negativo van en oro.</div></div>'''
+    bb = f'<div class=b style="background:{HUE}"><div style="position:absolute;left:{ox}px;top:{oy}px">{logo}</div>{ann}{txt}{tag("La idea")}{tag("02", x=1510)}</div>'
+    shot(page(bb), "board/02_idea.png", Wb, Hb)
 
 # 3 · versiones
 if want("versiones"):
     cell = lambda inner, bg, cap, capc=NIE, w=460, h=330: (f'<div style="display:flex;flex-direction:column;gap:10px"><div style="width:{w}px;height:{h}px;background:{bg};display:flex;align-items:center;justify-content:center">{inner}</div>'
                                                            f'<div class=lab style="color:{NIE}">{cap}</div></div>')
-    sizes = "".join(f'<div style="display:flex;flex-direction:column;align-items:center;gap:6px">{inl([(SMALL if s<=24 else SYM, PET)], w=s)}<span style="font-size:11px;color:{NIE}">{s} px</span></div>' for s in (16, 24, 32, 56))
+    sizes = "".join(f'<div style="display:flex;flex-direction:column;align-items:center;gap:6px">{inl([(SMALL if s<=24 else SYM, PET)], w=s)}<span style="font-size:11px;color:{NIE}">{s} px</span></div>' for s in (16, 24, 44))
     sizes += f'<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><img src="{M}/iconos/favicon.svg" style="width:32px"><span style="font-size:11px;color:{NIE}">favicon</span></div>'
-    sizes += f'<div style="display:flex;flex-direction:column;align-items:center;gap:6px">{inl(layers(WH,"color"), h=28)}<span style="font-size:11px;color:{NIE}">horizontal a 28 px</span></div>'
+    sizes += f'<div style="display:flex;flex-direction:column;align-items:center;gap:6px">{inl(layers(WH,"color"), w=150)}<span style="font-size:11px;color:{NIE}">una línea, 150 px</span></div>'
     b = f'''<div class=b style="background:#EAE5DB;padding:96px 64px 0 64px;display:grid;grid-template-columns:460px 460px 460px;gap:26px 32px">
-      {cell(inl(layers(WV,"color"), h=250), HUE, "Vertical · principal")}
-      {cell(inl(layers(WH,"color"), w=380), HUE, "Horizontal · texto en corte pequeño")}
-      {cell(inl(layers(WV,"negativo"), h=250), PET, "Negativo · oro y hueso sobre petróleo")}
-      {cell(inl(layers(None,"oro"), w=330), PETD, "Símbolo en oro", w=460, h=250)}
-      {cell(inl(layers(WV,"tinta"), h=200), "#FFFFFF", "Una tinta", w=460, h=250)}
+      {cell(inl(layers(WV,"color"), w=340), HUE, "Principal")}
+      {cell(inl(layers(WH,"color"), w=390), HUE, "Una línea · web y documentos")}
+      {cell(inl(layers(WV,"negativo"), w=340), PET, "Negativo · filete y ojos en oro")}
+      {cell(inl(layers(None,"oro"), w=150), PETD, "Los ojos · avatar y sello", w=460, h=250)}
+      {cell(inl(layers(WV,"tinta"), w=320), "#FFFFFF", "Una tinta", w=460, h=250)}
       {cell('<div style="display:flex;gap:26px;align-items:flex-end">' + sizes + '</div>', HUE, "Tamaños reales y reducido", w=460, h=250)}
       {tag("Versiones")}{tag("03", x=1510)}</div>'''
     shot(page(b), "board/03_versiones.png", Wb, Hb)
@@ -74,19 +73,19 @@ if want("color"):
 # 5 · aplicaciones: tarjeta y placa
 if want("apps1"):
     foil = f"linear-gradient(135deg,#D8BE86 0%,#B8955A 45%,#E3CD98 60%,#A9864B 100%)"
-    card_front = f'<div style="width:504px;height:280px;background:{PET};box-shadow:0 22px 40px rgba(10,30,38,.35);display:flex;align-items:center;justify-content:center">{inl(layers(None,"oro"), w=220)}</div>'
+    card_front = f'<div style="width:504px;height:280px;background:{PET};box-shadow:0 22px 40px rgba(10,30,38,.35);display:flex;align-items:center;justify-content:center">{inl(layers(WV,"negativo"), w=260)}</div>'
     card_back = f'''<div style="width:504px;height:280px;background:{HUE};box-shadow:0 22px 40px rgba(10,30,38,.25);padding:38px 40px;display:flex;flex-direction:column;justify-content:space-between">
       <div><div class=serif style="font-size:24px;font-weight:500;letter-spacing:3px;color:{PET}">[NOMBRE DEL PROFESIONAL]</div><div style="font-size:14px;letter-spacing:2px;text-transform:uppercase;color:{NIE};margin-top:8px">[Cargo confirmado]</div></div>
-      <div style="display:flex;justify-content:space-between;align-items:flex-end"><div style="font-size:14px;line-height:1.7;color:{TIN}">[Teléfono]<br>[Correo corporativo]<br>La Paz, Bolivia</div>{inl(layers(None,"color"), w=86)}</div></div>'''
+      <div style="display:flex;justify-content:space-between;align-items:flex-end"><div style="font-size:14px;line-height:1.7;color:{TIN}">[Teléfono]<br>[Correo corporativo]<br>La Paz, Bolivia</div>{inl(layers(None,"color"), w=52)}</div></div>'''
     plate = f'''<div style="width:520px;height:640px;background:#23434E;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 120px rgba(0,0,0,.35)">
       <div style="width:360px;height:240px;background:{foil};box-shadow:0 14px 28px rgba(0,0,0,.45);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;position:relative">
-        {inl(layers(WV,"tinta"), h=140)}
+        {inl(layers(WV,"tinta"), w=250)}
         <div style="font-size:10px;letter-spacing:3px;color:#3A3020">CONTABILIDAD Y ASESORÍA · PISO [__]</div>
         {''.join(f'<div style="position:absolute;{p};width:9px;height:9px;border-radius:5px;background:#8E7040"></div>' for p in ("left:14px;top:14px","right:14px;top:14px","left:14px;bottom:14px","right:14px;bottom:14px"))}</div></div>'''
     b = f'''<div class=b style="background:#E4DED2">
       <div style="position:absolute;left:80px;top:130px;display:flex;flex-direction:column;gap:40px">{card_front}{card_back}</div>
       <div style="position:absolute;left:1000px;top:130px">{plate}</div>
-      <div class=lab style="position:absolute;left:80px;top:846px;color:{NIE}">Tarjeta 90 × 50 mm · ojos en oro en caliente sobre petróleo</div>
+      <div class=lab style="position:absolute;left:80px;top:846px;color:{NIE}">Tarjeta 90 × 50 mm · filete y ojos en oro en caliente</div>
       <div class=lab style="position:absolute;left:1000px;top:800px;width:520px;color:{NIE}">Placa de bronce grabada, entrada de la oficina</div>
       {tag("Aplicaciones")}{tag("05", x=1510)}</div>'''
     shot(page(b), "board/05_tarjeta_placa.png", Wb, Hb)
@@ -95,7 +94,7 @@ if want("apps1"):
 if want("apps2"):
     lines = "".join(f'<div style="height:5px;width:{w}%;background:#E3DED3;margin-top:11px"></div>' for w in (92, 88, 95, 60, 0, 90, 94, 72))
     letter = f'''<div style="width:400px;height:566px;background:#FBF9F5;box-shadow:0 18px 36px rgba(10,30,38,.22);padding:44px 46px;display:flex;flex-direction:column">
-      <div style="display:flex;justify-content:center">{inl(layers(WV,"color"), h=92)}</div>
+      <div style="display:flex;justify-content:center">{inl(layers(WV,"color"), w=180)}</div>
       <div style="height:1px;background:{ORO};margin:26px 0 22px"></div>
       <div style="font-size:11px;letter-spacing:2px;color:{NIE}">LA PAZ, [FECHA]</div>
       <div class=serif style="font-size:20px;font-weight:500;color:{PET};margin-top:16px">Resumen de cierre · [período]</div>{lines}
@@ -105,8 +104,8 @@ if want("apps2"):
       <div style="position:relative;width:74px;height:74px;border-radius:37px;background:{ORO};display:flex;align-items:center;justify-content:center;margin-top:-10px">{inl(layers(None,"tinta"), w=50)}</div></div>'''
     web = f'''<div style="width:640px;height:400px;background:{HUE};box-shadow:0 18px 36px rgba(10,30,38,.22);overflow:hidden">
       <div style="height:34px;background:#DDD6CA;display:flex;align-items:flex-end;padding-left:10px"><div style="background:{HUE};height:26px;padding:0 12px;display:flex;align-items:center;gap:8px;font-size:12px"><img src="{M}/iconos/favicon.svg" style="width:14px">Gabinete Contable</div></div>
-      <div style="padding:20px 30px;display:flex;justify-content:space-between;align-items:center">{inl(layers(WH,"color"), h=46)}
-        <div style="display:flex;gap:20px;font-size:11px;letter-spacing:2px;color:{TIN}"><span>CONTABILIDAD</span><span>SERVICIOS</span><span>EL GABINETE</span></div></div>
+      <div style="padding:20px 30px;display:flex;justify-content:space-between;align-items:center">{inl(layers(WH,"color"), w=230)}
+        <div style="display:flex;gap:16px;font-size:10px;letter-spacing:1.6px;color:{TIN}"><span>CONTABILIDAD</span><span>SERVICIOS</span><span>EL GABINETE</span></div></div>
       <div style="padding:38px 30px 0"><div class=serif style="font-size:44px;font-weight:500;line-height:1.08;color:{PET}">Sus libros en orden.<br>Cada cuenta, explicada.</div>
         <div style="font-size:14px;color:{NIE};margin-top:14px;line-height:1.5;width:380px">Contabilidad continua para empresas, con un responsable que conoce su caso.</div>
         <div style="display:inline-block;margin-top:20px;background:{PET};color:{HUE};font-size:12px;letter-spacing:2px;padding:12px 18px">CONVERSEMOS</div></div></div>'''
