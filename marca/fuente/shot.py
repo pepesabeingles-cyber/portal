@@ -8,6 +8,9 @@ FONTCSS = f"""
 @font-face{{font-family:'Hanken Grotesk';font-weight:400;src:url('file://{HERE}/node_modules/@fontsource/hanken-grotesk/files/hanken-grotesk-latin-400-normal.woff2')}}
 @font-face{{font-family:'Hanken Grotesk';font-weight:600;src:url('file://{HERE}/node_modules/@fontsource/hanken-grotesk/files/hanken-grotesk-latin-600-normal.woff2')}}
 @font-face{{font-family:'Hanken Grotesk';font-weight:700;src:url('file://{HERE}/node_modules/@fontsource/hanken-grotesk/files/hanken-grotesk-latin-700-normal.woff2')}}
+@font-face{{font-family:'Bodoni Moda';font-weight:400 900;src:url('file://{HERE}/node_modules/@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-standard-normal.woff2')}}
+@font-face{{font-family:'Jost';font-weight:400;src:url('file://{HERE}/node_modules/@fontsource/jost/files/jost-latin-400-normal.woff2')}}
+@font-face{{font-family:'Jost';font-weight:500;src:url('file://{HERE}/node_modules/@fontsource/jost/files/jost-latin-500-normal.woff2')}}
 *{{box-sizing:border-box}} body{{margin:0}}
 """
 def shot(html, png, width, height, scale=2, transparent=False):

@@ -1,4 +1,7 @@
 node_modules/
-out/
+fonts/
+out3/
+board/
 _tmp_render.html
+_c.png
 __pycache__/
