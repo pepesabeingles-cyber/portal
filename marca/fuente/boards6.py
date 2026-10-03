@@ -23,23 +23,28 @@ if want("logo"):
 if want("idea"):
     s = 2.2; ox, oy = 110, 170
     ob = lk.bounds(lk.union(*[p for p, _ in layers(None, "color")]))
-    owlsvg = inl(layers(None, "color"), h=(ob[3] - ob[1]) * s)
+    avesvg = inl(layers(None, "color"), h=(ob[3] - ob[1]) * s)
     from identidad import OB as _OB
     px = lambda x: ox + (x - _OB[0]) * s
     py = lambda y: oy + (y - _OB[1]) * s
     L = lambda x1, y, x2: f'<div style="position:absolute;left:{min(x1,x2)}px;top:{y}px;width:{abs(x2-x1)}px;height:1px;background:{NIE}"></div>'
     dot = lambda x, y: f'<div style="position:absolute;left:{x-4}px;top:{y-4}px;width:8px;height:8px;border-radius:4px;background:{TIN}"></div>'
-    lab = lambda x, y, t: f'<div class=lab style="position:absolute;left:{x}px;top:{y-8}px;width:300px;color:{TIN}">{t}</div>'
+    lab = lambda x, y, t: f'<div class=lab style="position:absolute;left:{x}px;top:{y-8}px;width:420px;color:{TIN}">{t}</div>'
     xr = px(200) + 30
-    pts = [((150, 14), "Penachos · búho americano"), ((124.5, 93), "Mirada serena · iris en oro"), ((120, 196), "Pecho barrado, como un grabado"), ((175, 272), "Posado en una rama")]
+    import math
+    from halcon import LEAN, PIVOT, EYE
+    def tilt(x, y):  # mismo giro que el dibujo
+        a = math.radians(LEAN); dx, dy = x - PIVOT[0], y - PIVOT[1]
+        return PIVOT[0] + dx * math.cos(a) - dy * math.sin(a), PIVOT[1] + dx * math.sin(a) + dy * math.cos(a)
+    pts = [(tilt(129, 56), "Bigotera · halcón peregrino"), (tilt(*EYE), "Mirada aguda · anillo en oro"), (tilt(143, 150), "Pecho barrado, como un grabado"), ((180, 233), "Posado en una rama")]
     ann = "".join(dot(px(x), py(y)) + L(px(x), py(y), xr) + lab(xr + 12, py(y), t) for (x, y), t in pts)
     txt = f'''<div style="position:absolute;left:1000px;top:230px;width:520px;display:flex;flex-direction:column;gap:24px">
-      <div class=serif style="font-size:50px;font-weight:500;line-height:1.08;color:{PET}">Un búho de verdad.</div>
-      <div style="font-size:20px;line-height:1.55">Es el búho americano, que también vive en Bolivia, dibujado como un grabado de historia natural: la especie real, no una caricatura.</div>
-      <div style="font-size:20px;line-height:1.55">Mira tranquilo y atento, con el párpado apenas bajo: ni asustado ni tenso. El iris es el único toque de oro.</div>
+      <div class=serif style="font-size:50px;font-weight:500;line-height:1.08;color:{PET}">Un halcón de verdad.</div>
+      <div style="font-size:20px;line-height:1.55">Es el halcón peregrino, que también vive en Bolivia, dibujado como un grabado de historia natural: la especie real, no una caricatura.</div>
+      <div style="font-size:20px;line-height:1.55">Ve el detalle desde lejos y no se le escapa nada: la mirada de quien revisa las cuentas. El anillo del ojo es el único toque de oro.</div>
       <div style="width:80px;height:2px;background:{ORO}"></div>
-      <div style="font-size:16px;line-height:1.5;color:{NIE}">El nombre, en Bodoni, lleva la marca. El búho la acompaña.</div></div>'''
-    bb = f'<div class=b style="background:{HUE}"><div style="position:absolute;left:{ox}px;top:{oy}px">{owlsvg}</div>{ann}{txt}{tag("La idea")}{tag("02", x=1510)}</div>'
+      <div style="font-size:16px;line-height:1.5;color:{NIE}">El nombre, en Bodoni, lleva la marca. El halcón la acompaña.</div></div>'''
+    bb = f'<div class=b style="background:{HUE}"><div style="position:absolute;left:{ox}px;top:{oy}px">{avesvg}</div>{ann}{txt}{tag("La idea")}{tag("02", x=1510)}</div>'
     shot(page(bb), "board/02_idea.png", Wb, Hb)
 
 # 3 · versiones
@@ -52,8 +57,8 @@ if want("versiones"):
     b = f'''<div class=b style="background:#EAE5DB;padding:96px 64px 0 64px;display:grid;grid-template-columns:460px 460px 460px;gap:26px 32px">
       {cell(inl(layers(WV,"color"), h=290), HUE, "Principal")}
       {cell(inl(layers(WH,"color"), w=360), HUE, "Horizontal · web y documentos")}
-      {cell(inl(layers(WV,"negativo"), h=290), PET, "Negativo · búho hueso, iris en oro")}
-      {cell(inl(layers(None,"oro"), h=210), PETD, "El búho en oro", w=460, h=250)}
+      {cell(inl(layers(WV,"negativo"), h=290), PET, "Negativo · halcón hueso, ojo en oro")}
+      {cell(inl(layers(None,"oro"), h=210), PETD, "El halcón en oro", w=460, h=250)}
       {cell(inl(layers(WV,"tinta"), h=210), "#FFFFFF", "Una tinta", w=460, h=250)}
       {cell('<div style="display:flex;gap:18px;align-items:flex-end">' + sizes + '</div>', HUE, "Tamaños reales y reducido", w=460, h=250)}
       {tag("Versiones")}{tag("03", x=1510)}</div>'''

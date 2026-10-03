@@ -2,7 +2,6 @@ import shutil, logo_kit as lk
 from PIL import Image
 from identidad import *
 from identidad import _place
-from real2 import owl_small
 from shot import shot, HERE
 M = f"file://{HERE}/out7/marca"
 def inl(L, h=None, w=None, extra=""):
@@ -28,13 +27,13 @@ shot(page(body, HUE), "dimg/d_detalle.png", 1500, 620)
 
 # versiones
 for fn, inner in (("d_v_principal", inl(layers(WV, "color"), h=250)), ("d_v_horizontal", inl(layers(WH, "color"), w=330)),
-                  ("d_v_buho", inl(layers(None, "color"), h=250)),
+                  ("d_v_halcon", inl(layers(None, "color"), h=250)),
                   ("d_v_reducido", "".join(f'<span style="margin:0 14px">{inl([(SMALL, PET)], h=s)}</span>' for s in (16, 24, 32)) + f'<img src="{M}/iconos/favicon.svg" style="width:32px;margin-left:18px">')):
     shot(center(f'<div style="display:flex;align-items:flex-end">{inner}</div>', 380, 300, HUE), f"dimg/{fn}.png", 380, 300)
 
-# espacio libre: 2x por lado, x = 1/6 del ancho del búho
+# espacio libre: 2x por lado, x = 1/6 del ancho del halcón
 Lv = layers(WV, "color"); allb = lk.bounds(lk.union(*[p for p, _ in Lv]))
-x = (OB[2] - OB[0]) / 6 * (lk.bounds(V_OWL[0])[3] - lk.bounds(V_OWL[0])[1]) / (OB[3] - OB[1])
+x = (OB[2] - OB[0]) / 6 * (lk.bounds(V_AVE[0])[3] - lk.bounds(V_AVE[0])[1]) / (OB[3] - OB[1])
 pad = 2 * x; s = 1.0
 x0, y0, x1, y1 = allb[0] - pad, allb[1] - pad, allb[2] + pad, allb[3] + pad
 W_, H_ = x1 - x0, y1 - y0; k = 560 / H_
@@ -56,20 +55,20 @@ card(inl(brown, w=380), "x_recolorear")
 grad = '<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2d7a92"/><stop offset="1" stop-color="#0a2530"/></linearGradient></defs>'
 s_ = lk.svg(layers(WH, "color")).replace(f'fill="{PET}"', 'fill="url(#g)"').replace("<title>", grad + "<title>", 1).replace("<svg ", '<svg width="380" style="filter:drop-shadow(6px 8px 6px rgba(0,0,0,.45))" ', 1)
 card(s_, "x_efectos")
-card(f'<div style="display:flex;align-items:center;gap:20px">{inl(owl_layers(H_OWL, "color"), h=120)}<div style="font-family:\'DejaVu Serif\';font-style:italic;font-size:40px;line-height:1.1;color:{PET}">Gabinete<br>Contable</div></div>', "x_fuente")
+card(f'<div style="display:flex;align-items:center;gap:20px">{inl(ave_layers(H_AVE, "color"), h=120)}<div style="font-family:\'DejaVu Serif\';font-style:italic;font-size:40px;line-height:1.1;color:{PET}">Gabinete<br>Contable</div></div>', "x_fuente")
 card(inl([(p, ORO) for p, _ in layers(WH, "color")], w=380), "x_oro")
-big = owl_layers(_place(THS * 3.2, lambda b: BBS[0] - THS * 0.42 - b[2], lambda b: BBS[3] + THS * 0.08 - b[3]), "color") + [(BLOCK_S, PET)]
+big = ave_layers(_place(THS * 3.2, lambda b: BBS[0] - THS * 0.42 - b[2], lambda b: BBS[3] + THS * 0.08 - b[3]), "color") + [(BLOCK_S, PET)]
 card(inl(big, h=200), "x_grande")
 
 # combinaciones
 for fn, sch, bg in (("c_hueso", "color", HUE), ("c_petroleo", "negativo", PET), ("c_blanco", "tinta", "#FFFFFF"), ("c_oro", "tinta", ORO)):
     shot(center(inl(layers(WH, sch), w=320), 380, 214, bg), f"dimg/{fn}.png", 380, 214)
 
-# trama del plumaje (recurso gráfico)
+# trama del plumaje: el barrado del pecho (recurso gráfico)
 marks = []
 for j, yy in enumerate(range(18, 300, 16)):
     off = 11 if j % 2 else 0
     for xx in range(-10 + off, 1620, 22):
-        marks.append(f'<path d="M{xx-8} {yy} C{xx-3} {yy-2.4} {xx+3} {yy+2.4} {xx+8} {yy}" stroke="{PET}" stroke-width="2" fill="none" stroke-linecap="round"/>')
+        marks.append(f'<path d="M{xx-7} {yy} C{xx-2.4} {yy+3.2} {xx+2.4} {yy+3.2} {xx+7} {yy}" stroke="{PET}" stroke-width="2" fill="none" stroke-linecap="round"/>')
 band = lambda op, bg: f'<svg width="1600" height="300" xmlns="http://www.w3.org/2000/svg" style="background:{bg}"><g opacity="{op}">{"".join(marks)}</g></svg>'
 shot(page(f'<div style="display:flex;flex-direction:column">{band(1, HUE)}{band(0.12, HUE)}</div>', HUE), "dimg/d_trama.png", 1600, 600)
